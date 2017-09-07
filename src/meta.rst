@@ -105,7 +105,7 @@ Building ``noarch`` packages
 The ``noarch: python`` can be used to build **pure** Python packages:
 
 * that do not perform any Python version specific code translation at install time (i.e. 2to3);
-* and have fixed requirements (i.e. no ``backports``....   # [py27]).
+* and have fixed requirements (i.e. no ``backports  # [py27]``).
 
 The use of ``noarch: python`` will drastically reduce the CI usage b/c the package will be built
 only once on ``CircleCI``.
