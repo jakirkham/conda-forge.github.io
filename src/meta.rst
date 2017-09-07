@@ -102,7 +102,7 @@ there are ``numpy`` packages for ``1.7`` available for Python 3.4 and 2.7 in the
 Building ``noarch`` packages
 ----------------------------
 
-The ``noarch: python`` can be used to build pure Python packages:
+The ``noarch: python`` can be used to build **pure** Python packages:
 
 * that do not perform any Python version specific code translation at install time (i.e. 2to3);
 * and have fixed requirements (i.e. no ``backports``....   # [py27]).
