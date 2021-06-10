@@ -5,9 +5,9 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Pinned dependencies &#8212; conda-forge 2021.04.06 documentation</title>
+    <title>Pinned dependencies &#8212; conda-forge 2021.06.10 documentation</title>
     <link rel="stylesheet" href="../_static/cloud.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
@@ -54,7 +54,7 @@
         <li class="right" >
           <a href="updating_pkgs.html" title="Maintaining packages"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
-    <li><a href="../index.html">conda-forge 2021.04.06 documentation</a> &#187;</li>
+    <li><a href="../index.html">conda-forge 2021.06.10 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="00_intro.html" accesskey="U">Maintainer Documentation</a> &#187;</li> 
       </ul>
@@ -74,11 +74,11 @@
 <p>Maintaining a large collection of packages with different requirements poses the danger of producing islands of packages with mutually exclusive dependencies.
 Especially widely used libraries with restricted version compatibilities increase the danger of fractioning the package space.
 By fixing crucial libraries to specific dependency version shared by all packages in conda-forge, we avoid fractioning of our packages in incompatible islands.
-The following paragraphs give a short introduction how this global version pinning is realized in conda-forge.</p>
+The following paragraphs give a short introduction about how this global version pinning is realized in conda-forge.</p>
 <p>The current versions of globally pinned packages are defined in the <a class="reference external" href="https://github.com/conda-forge/conda-forge-pinning-feedstock/blob/master/recipe/conda_build_config.yaml">conda_build_config.yaml</a> file located in the <code class="docutils literal notranslate"><span class="pre">conda-forge-pinning</span></code> feedstock.
 These pinned versions represent the ABIs that conda-forge is currently supporting, with almost all available packages built against that version.</p>
 <p>When a rerendering happens, conda-smithy will render the recipe using conda-build and output configuration files for each job and save them in a yaml file in <code class="docutils literal notranslate"><span class="pre">.ci_support</span></code> folder. For example, there’s an output configuration file for each OS, each python version, etc.</p>
-<p>These output configuration files are stripped to options that are used in the build and therefore a change in the config files in <code class="docutils literal notranslate"><span class="pre">.ci_support</span></code> folder implies that there needs to be a new build.</p>
+<p>These output configuration files are stripped to options that are used in the build and therefore a change in the config files in <code class="docutils literal notranslate"><span class="pre">.ci_support</span></code> folder implies that a new build is needed there.</p>
 <p>Pinning of packages are handled by the same configuration file and conda-build. This means that packages need not be pinned manually.</p>
 <p>E.g.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">requirements</span><span class="p">:</span>
@@ -115,7 +115,7 @@ These pinned versions represent the ABIs that conda-forge is currently supportin
 </pre></div>
 </div>
 </div>
-<p>There is additional documentation on this pinning scheme in <a class="reference external" href="https://docs.conda.io/projects/conda-build/en/latest/source/variants.html#build-variants">the conda docs</a>.</p>
+<p>There is additional documentation on this pinning scheme in <a class="reference external" href="https://docs.conda.io/projects/conda-build/en/latest/resources/variants.html#build-variants">the conda docs</a>.</p>
 </section>
 <section id="specifying-run-exports">
 <h2>Specifying run_exports<a class="headerlink" href="#specifying-run-exports" title="Permalink to this headline">¶</a></h2>
@@ -143,18 +143,18 @@ for the affected packages in conda-forge.</p>
 <p>Usually, the bot will generate these migrations automatically. However, when a pin is first made or added, one may need to
 be added by hand. To do this, follow these steps:</p>
 <ol class="arabic simple">
-<li><p>create a new migration yaml by copying <a class="reference external" href="https://github.com/conda-forge/conda-forge-pinning-feedstock/blob/master/recipe/migrations/example.exyaml">example.exyaml</a> in the <code class="docutils literal notranslate"><span class="pre">conda-forge/conda-forge-pinning</span></code> repository.</p></li>
-<li><p>change the migration yaml to reflect the package and version to be migrated</p></li>
-<li><p>write a <span class="xref std std-ref">migrator</span> for propagating the pin changes.</p></li>
-<li><p>propose the changes as a <a class="reference internal" href="../misc/00_intro.html#term-pr"><span class="xref std std-term">PR</span></a> to <a class="reference external" href="https://github.com/conda-forge/conda-forge-pinning-feedstock">conda-forge/conda-forge-pinning-feedstock</a>.</p></li>
-<li><p>once accepted the migration will begin. The migration status can be monitored at <a class="reference external" href="https://conda-forge.org/status">https://conda-forge.org/status</a>.</p></li>
+<li><p>Create a new migration yaml by copying <a class="reference external" href="https://github.com/conda-forge/conda-forge-pinning-feedstock/blob/master/recipe/migrations/example.exyaml">example.exyaml</a> in the <code class="docutils literal notranslate"><span class="pre">conda-forge/conda-forge-pinning</span></code> repository.</p></li>
+<li><p>Change the migration yaml to reflect the package and version to be migrated</p></li>
+<li><p>Write a <span class="xref std std-ref">migrator</span> for propagating the pin changes.</p></li>
+<li><p>Propose the changes as a <a class="reference internal" href="../misc/00_intro.html#term-pr"><span class="xref std std-term">PR</span></a> to <a class="reference external" href="https://github.com/conda-forge/conda-forge-pinning-feedstock">conda-forge/conda-forge-pinning-feedstock</a>.</p></li>
+<li><p>Once accepted the migration will begin. The migration status can be monitored at <a class="reference external" href="https://conda-forge.org/status">https://conda-forge.org/status</a>.</p></li>
 <li><p>After the migration is complete, a new PR can be issued to <a class="reference external" href="https://github.com/conda-forge/conda-forge-pinning-feedstock">conda-forge/conda-forge-pinning-feedstock</a> to:</p>
 <ul class="simple">
 <li><p>Remove the migrator yaml for the completed migration</p></li>
 <li><p>If the version of the package is pinned in the global conda_build_config.yaml, this PR should also:</p>
 <ul>
-<li><p>update the version in conda_build_config.yaml</p></li>
-<li><p>bump the version in meta.yaml to the current date</p></li>
+<li><p>Update the version in conda_build_config.yaml</p></li>
+<li><p>Bump the version in meta.yaml to the current date</p></li>
 </ul>
 </li>
 </ul>
@@ -260,7 +260,7 @@ and documentation <a class="reference external" href="https://regro.github.io/cf
         <li class="right" >
           <a href="updating_pkgs.html" title="Maintaining packages"
              >previous</a> &nbsp; &nbsp;</li>
-    <li><a href="../index.html">conda-forge 2021.04.06 documentation</a> &#187;</li>
+    <li><a href="../index.html">conda-forge 2021.06.10 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="00_intro.html" >Maintainer Documentation</a> &#187;</li> 
       </ul>

@@ -5,9 +5,9 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Contributing packages &#8212; conda-forge 2021.04.06 documentation</title>
+    <title>Contributing packages &#8212; conda-forge 2021.06.10 documentation</title>
     <link rel="stylesheet" href="../_static/cloud.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
@@ -54,7 +54,7 @@
         <li class="right" >
           <a href="infrastructure.html" title="Infrastructure"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
-    <li><a href="../index.html">conda-forge 2021.04.06 documentation</a> &#187;</li>
+    <li><a href="../index.html">conda-forge 2021.06.10 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="00_intro.html" accesskey="U">Maintainer Documentation</a> &#187;</li> 
       </ul>
@@ -69,6 +69,10 @@
             
   <section id="contributing-packages">
 <span id="dev-contribute-pkgs"></span><h1>Contributing packages<a class="headerlink" href="#contributing-packages" title="Permalink to this headline">¶</a></h1>
+<p>A maintainer is an individual who is responsible for maintaining and updating one or more feedstock repositories and packages as well as their future versions. They have push access to the feedstock repositories of only the packages they maintain and can merge <a class="reference external" href="https://conda-forge.org/docs/misc/00_intro.html#glossary">PR</a> into it. See <a class="reference external" href="https://conda-forge.org/docs/maintainer/adding_pkgs.html#maintainer-role">Maintainers Role.</a></p>
+<p>The list of maintainers of a feedstock package is recorded in the recipe of that package itself. Once you create a package, as a code owner, you automatically become a maintainer of it. In case you wish to be a maintainer of a certain package, you should ask for permission from its current maintainers and
+get your <cite>gitub-id</cite> added to the <cite>recipe-maintainers</cite> section in the recipe’s <cite>meta.yaml</cite>.
+<a class="reference external" href="https://conda-forge.org/docs/maintainer/updating_pkgs.html#updating-the-maintainer-list">Please refer to Updating the maintainer list</a> for detailed instructions.</p>
 <section id="the-staging-process">
 <span id="creating-recipes"></span><h2>The staging process<a class="headerlink" href="#the-staging-process" title="Permalink to this headline">¶</a></h2>
 <p>This document presents an overview over how to contribute packages to conda-forge.</p>
@@ -76,19 +80,16 @@
 <h3>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h3>
 <p>There are multiple ways to get started:</p>
 <ol class="arabic simple">
-<li><p>Look at <a class="reference external" href="https://github.com/conda-forge/staged-recipes/tree/master/recipes/example">the example recipe</a> in the staged-recipes repository and modify it as necessary.</p></li>
-<li><p>If it is an R package from <a class="reference external" href="https://cran.r-project.org/">CRAN</a>, please
-instead start by using the <a class="reference external" href="https://github.com/bgruening/conda_r_skeleton_helper">conda-forge helper script for R recipes</a>.
-Then if necessary you can make manual edits to the recipe.</p></li>
-<li><p>If it is a python package, you can generate the recipe as a starting point with
-<code class="docutils literal notranslate"><span class="pre">grayskull</span> <span class="pre">pypi</span> <span class="pre">your_package_name</span></code>. To install it you can use <cite>conda install -c conda-forge grayskull</cite>. You do <em>not</em> have to use grayskull, and the
-recipes produced by grayskull will need to be reviewed and edited.
-In particular, you’ll at least need to check the build line to <a class="reference internal" href="#use-pip"><span class="std std-ref">use pip</span></a>,
-add yourself as a maintainer,
-and specify a <code class="docutils literal notranslate"><span class="pre">license_file</span></code>.</p></li>
+<li><p>Look at <a class="reference external" href="https://github.com/conda-forge/staged-recipes/tree/master/recipes/example">the example recipe</a> in the <a class="reference external" href="https://github.com/conda-forge/staged-recipes">staged-recipes repository</a> and modify it as necessary.</p></li>
+<li><p>If it is an R package from <a class="reference external" href="https://cran.r-project.org/">CRAN</a>, kindly
+start by using the <a class="reference external" href="https://github.com/bgruening/conda_r_skeleton_helper">conda-forge helper script for R recipes</a> instead.
+Then if necessary, you can make manual edits to the recipe.</p></li>
+<li><p>If it is a python package, you can generate the recipe as a starting point with <code class="docutils literal notranslate"><span class="pre">grayskull</span></code>.
+Use <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">grayskull</span></code> to install <code class="docutils literal notranslate"><span class="pre">grayskull</span></code>, followed by <code class="docutils literal notranslate"><span class="pre">grayskull</span> <span class="pre">pypi</span> <span class="pre">your_package_name</span></code> to generate the recipe. Note that you do <em>not</em> necessarily have to use <code class="docutils literal notranslate"><span class="pre">grayskull</span></code>, and the
+recipes produced by <code class="docutils literal notranslate"><span class="pre">grayskull</span></code> might need to be reviewed and edited. Read more about <code class="docutils literal notranslate"><span class="pre">grayskull</span></code> and how to use it <a class="reference external" href="https://github.com/conda-incubator/grayskull#introduction">here</a>.</p></li>
 </ol>
 <p>Your final recipe should have no comments (unless they’re actually relevant to the recipe, and not generic instruction comments), and follow the order in the example.</p>
-<p><em>If there are details you are not sure about please open a pull request. The conda-forge team will be happy to answer your questions.</em></p>
+<p><em>If there are any details you are not sure about please open a pull request. The conda-forge team will be happy to answer your questions.</em></p>
 <p>In case you are building your first recipe using conda-forge, a step-by-step instruction and checklist that might help you with a successful build is provided in the following.</p>
 </section>
 <section id="step-by-step-instructions">
@@ -136,9 +137,9 @@ test that the module can be imported, as described in the example.</p></li>
 </section>
 <section id="feedback-and-revision">
 <h3>Feedback and revision<a class="headerlink" href="#feedback-and-revision" title="Permalink to this headline">¶</a></h3>
-<p>Once you finished your PR, all you have to do is waiting for feedback from our reviewer team.</p>
-<p>The reviewer team will assist you by pointing out improvements and answering questions. Once the package is ready, the reviewers will approve and merge your pull request.</p>
-<p>After merging the <a class="reference internal" href="../misc/00_intro.html#term-pr"><span class="xref std std-term">PR</span></a>, our infrastructure will build the package and make it available in the conda-channel.</p>
+<p>Once you finished your PR, all you have to do is wait for feedback from our review team.</p>
+<p>The review team will assist you by pointing out improvements and answering questions. Once the package is ready, the reviewers will approve and merge your pull request.</p>
+<p>After merging the <a class="reference internal" href="../misc/00_intro.html#term-pr"><span class="xref std std-term">PR</span></a>, our <a class="reference internal" href="../misc/00_intro.html#term-ci"><span class="xref std std-term">CI</span></a> infrastructure will build the package and make it available in the conda-channel.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If you have questions or have not heard back for a while, you can notify us by including <code class="docutils literal notranslate"><span class="pre">&#64;conda-forge/staged-recipes</span></code> in your GitHub message.</p>
@@ -205,7 +206,7 @@ staged-recipes directory.</p>
 </pre></div>
 </div>
 </li>
-<li><p>Define the conda-forge/staged-recipes repository as “upstream” (if you have not already done so).:</p>
+<li><p>Define the conda-forge/staged-recipes repository as <code class="docutils literal notranslate"><span class="pre">upstream</span></code> (if you have not already done so).:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">remote</span> <span class="n">add</span> <span class="n">upstream</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">conda</span><span class="o">-</span><span class="n">forge</span><span class="o">/</span><span class="n">staged</span><span class="o">-</span><span class="n">recipes</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
@@ -267,7 +268,7 @@ install the necessary tools below).</p>
 </section>
 <section id="downloading-extra-sources-and-data-files">
 <h4>Downloading extra sources and data files<a class="headerlink" href="#downloading-extra-sources-and-data-files" title="Permalink to this headline">¶</a></h4>
-<p><code class="docutils literal notranslate"><span class="pre">conda-build</span> <span class="pre">3</span></code> supports multiple sources per recipe. Examples are available <a class="reference external" href="https://conda.io/projects/conda-build/en/latest/source/define-metadata.html#source-from-multiple-sources">in the conda-build docs</a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">conda-build</span> <span class="pre">3</span></code> supports multiple sources per recipe. Examples are available <a class="reference external" href="https://docs.conda.io/projects/conda-build/en/latest/resources/define-metadata.html#source-from-multiple-sources">in the conda-build docs</a>.</p>
 </section>
 </section>
 <section id="build">
@@ -309,7 +310,7 @@ Pure Python packages almost never need them.</p>
 <p>Remember to always add <code class="docutils literal notranslate"><span class="pre">pip</span></code> to the host requirements.</p>
 </section>
 <section id="use-pip">
-<span id="id2"></span><h4>Use pip<a class="headerlink" href="#use-pip" title="Permalink to this headline">¶</a></h4>
+<span id="id3"></span><h4>Use pip<a class="headerlink" href="#use-pip" title="Permalink to this headline">¶</a></h4>
 <p>Normally Python packages should use this line:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">build</span><span class="p">:</span>
   <span class="nt">script</span><span class="p">:</span> <span class="s">&quot;{{</span><span class="nv"> </span><span class="s">PYTHON</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">-m</span><span class="nv"> </span><span class="s">pip</span><span class="nv"> </span><span class="s">install</span><span class="nv"> </span><span class="s">.</span><span class="nv"> </span><span class="s">-vv&quot;</span>
@@ -336,7 +337,7 @@ as <code class="docutils literal notranslate"><span class="pre">host</span></cod
 <h4>Build, host and run<a class="headerlink" href="#build-host-and-run" title="Permalink to this headline">¶</a></h4>
 <p>Conda-build distinguishes three different kinds of dependencies.
 In the following paragraphs, we give a very short overview what packages go where.
-For a detailed explanation please refer to the <a class="reference external" href="https://docs.conda.io/projects/conda-build/en/latest/source/resources/define-metadata.html#requirements-section">conda-build documentation</a>.</p>
+For a detailed explanation please refer to the <a class="reference external" href="https://docs.conda.io/projects/conda-build/en/latest/resources/define-metadata.html#requirements-section">conda-build documentation</a>.</p>
 <p><strong>Build</strong></p>
 <blockquote>
 <div><p>Build dependencies are required in the build environment and contain all tools that are not needed on the host of the package.</p>
@@ -887,7 +888,7 @@ source:
         <li class="right" >
           <a href="infrastructure.html" title="Infrastructure"
              >previous</a> &nbsp; &nbsp;</li>
-    <li><a href="../index.html">conda-forge 2021.04.06 documentation</a> &#187;</li>
+    <li><a href="../index.html">conda-forge 2021.06.10 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="00_intro.html" >Maintainer Documentation</a> &#187;</li> 
       </ul>

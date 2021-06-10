@@ -5,9 +5,9 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Knowledge Base &#8212; conda-forge 2021.04.06 documentation</title>
+    <title>Knowledge Base &#8212; conda-forge 2021.06.10 documentation</title>
     <link rel="stylesheet" href="../_static/cloud.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
@@ -54,7 +54,7 @@
         <li class="right" >
           <a href="conda_forge_yml.html" title="Configuring conda-forge.yml"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
-    <li><a href="../index.html">conda-forge 2021.04.06 documentation</a> &#187;</li>
+    <li><a href="../index.html">conda-forge 2021.06.10 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="00_intro.html" accesskey="U">Maintainer Documentation</a> &#187;</li> 
       </ul>
@@ -83,10 +83,23 @@ On Windows, you can also use <code class="docutils literal notranslate"><span cl
     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ninja</span>  <span class="c1"># [win]</span>
 </pre></div>
 </div>
-<p>For CMake projects using the <a class="reference external" href="https://cmake.org/cmake/help/git-stage/module/FindPython3.html">FindPython3</a>
-module, you can tell CMake which Python to use by passing <code class="docutils literal notranslate"><span class="pre">-DPython3_EXECUTABLE=&quot;$PYTHON&quot;</span></code>
-(macOS or Linux) or <code class="docutils literal notranslate"><span class="pre">-DPython3_EXECUTABLE=&quot;%PYTHON%&quot;</span></code> (Windows) as a command line option.
+<p>For CMake projects using the <a class="reference external" href="https://cmake.org/cmake/help/git-stage/module/FindPython.html">FindPython</a>
+module, you can tell CMake which Python to use by passing <code class="docutils literal notranslate"><span class="pre">-DPython_EXECUTABLE=&quot;$PYTHON&quot;</span></code>
+(macOS or Linux) or <code class="docutils literal notranslate"><span class="pre">-DPython_EXECUTABLE=&quot;%PYTHON%&quot;</span></code> (Windows) as a command line option.
 Older CMake projects may require similar, but slightly different options.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Don’t forget that depending on which CMake module you use you have to use a different command:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://cmake.org/cmake/help/git-stage/module/FindPython.html">FindPython</a>:
+<code class="docutils literal notranslate"><span class="pre">-DPython_EXECUTABLE=...</span></code>.</p></li>
+<li><p><a class="reference external" href="https://cmake.org/cmake/help/git-stage/module/FindPython3.html">FindPython3</a>:
+<code class="docutils literal notranslate"><span class="pre">-DPython3_EXECUTABLE=...</span></code>.</p></li>
+<li><p><a class="reference external" href="https://cmake.org/cmake/help/git-stage/module/FindPython2.html">FindPython2</a>:
+<code class="docutils literal notranslate"><span class="pre">-DPython2_EXECUTABLE=...</span></code>.</p></li>
+</ul>
+<p>or if you are still on the deprecated <a class="reference external" href="https://cmake.org/cmake/help/latest/module/FindPythonLibs.html">FindPythonLibs</a>: <code class="docutils literal notranslate"><span class="pre">-DPYTHON_EXECUTABLE=...</span></code>.</p>
+</div>
 <p>Some optional, but useful CMake options:</p>
 <blockquote>
 <div><ul class="simple">
@@ -98,7 +111,7 @@ into lib64 or similar but on conda-forge we keep shared libraries in simply lib.
 <li><p><code class="docutils literal notranslate"><span class="pre">-DBUILD_SHARED_LIBS=ON</span></code> Instruct CMake to build shared libraries instead of static ones.</p></li>
 </ul>
 </div></blockquote>
-<p>Here are some basic commands to get you started. These are dependent on your source
+<p>Here are some basic commands for you to get started. These are dependent on your source
 code layout and aren’t intended to be used “as is”.</p>
 <p><strong>CMake lines for build.sh (macOS/Linux):</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cmake</span> <span class="n">CMakeLists</span><span class="o">.</span><span class="n">txt</span> <span class="o">-</span><span class="n">DPython3_EXECUTABLE</span><span class="o">=</span><span class="s2">&quot;$PYTHON&quot;</span>
@@ -140,15 +153,15 @@ the three pieces of information</p>
 <section id="particularities-on-windows">
 <h2>Particularities on Windows<a class="headerlink" href="#particularities-on-windows" title="Permalink to this headline">¶</a></h2>
 <p>This document presents conda-forge and conda-build information and examples
-when building on Windows.</p>
+while building on Windows.</p>
 <section id="local-testing">
 <h3>Local testing<a class="headerlink" href="#local-testing" title="Permalink to this headline">¶</a></h3>
 <p>The first thing that you should know is that you can locally test Windows
 builds of your packages even if you don’t own a Windows machine. Microsoft
 makes available free, official Windows virtual machines (VMs) <a class="reference external" href="https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/">at this website</a>. If you
-are unfamiliar with VM systems or have trouble installing Microsoft’s, please
-use a general web search to investigate — while these topics are beyond the
-scope of this documentation, there is ample discussion of them on the broader
+are unfamiliar with VM systems or have trouble installing Microsoft’s VMs, please
+use a general web search to explore — while these topics are beyond the
+scope of this documentation, there are ample discussions on them on the broader
 Internet.</p>
 <p>In order to compile native code (C, C++, etc.) on Windows, you will need to
 install Microsoft’s Visual C++ build tools on your VM. You must install
@@ -162,13 +175,12 @@ versions are:</p>
 <p>While you can obtain these tools by installing the right version of the full
 <a class="reference external" href="https://visualstudio.microsoft.com/">Visual Studio</a> development
 environment, you can save a lot of time and bandwidth by installing standalone
-“build tools” packages. The links are:</p>
+“build tools” packages. The links are as follows:</p>
 <ul class="simple">
 <li><p>For Python 2.7: <a class="reference external" href="https://www.microsoft.com/download/details.aspx?id=44266">Microsoft Visual C++ Compiler for Python 2.7</a>.</p></li>
 <li><p>For Python 3.5–3.7: <a class="reference external" href="https://www.visualstudio.com/downloads/#build-tools-for-visual-studio-2017">Microsoft Build Tools for Visual Studio 2017</a>.</p></li>
 </ul>
-<p>Please see <a class="reference external" href="https://wiki.python.org/moin/WindowsCompilers">the Python wiki page on Windows compilers</a> if you need more
-information.</p>
+<p>If you need more information. Please refer <a class="reference external" href="https://wiki.python.org/moin/WindowsCompilers">the Python wiki page on Windows compilers</a>.</p>
 </section>
 <section id="simple-cmake-based-bld-bat">
 <h3>Simple CMake-Based <code class="docutils literal notranslate"><span class="pre">bld.bat</span></code><a class="headerlink" href="#simple-cmake-based-bld-bat" title="Permalink to this headline">¶</a></h3>
@@ -202,7 +214,7 @@ nmake install
 <p>The following feedstocks are examples of this build structure deployed:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/conda-forge/libpng-feedstock/blob/master/recipe/bld.bat">libpng</a></p></li>
-<li><p><a class="reference external" href="https://github.com/conda-forge/pugixml-feedstock/blob/master/recipe/bld.bat">pugixml</a></p></li>
+<li><p><a class="reference external" href="https://github.com/conda-forge/pugixml-feedstock/blob/master/recipe/bld.bat">Pugixml</a></p></li>
 </ul>
 </section>
 <section id="building-for-different-vc-versions">
@@ -226,6 +238,26 @@ requirements of the VC version. For example, python 2.7 requires <code class="do
 </pre></div>
 </div>
 </section>
+<section id="using-vs2019">
+<h3>Using vs2019<a class="headerlink" href="#using-vs2019" title="Permalink to this headline">¶</a></h3>
+<p>To use <code class="docutils literal notranslate"><span class="pre">vs2019</span></code> make the following changes:</p>
+<p>In conda_build_config.yaml file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">c_compiler</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">vs2019</span>
+<span class="nt">cxx_compiler</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">vs2019</span>
+</pre></div>
+</div>
+<p>In conda-forge.yml file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">azure</span><span class="p">:</span>
+  <span class="nt">settings_win</span><span class="p">:</span>
+      <span class="nt">pool</span><span class="p">:</span>
+          <span class="nt">vmImage</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">windows-2019</span>
+</pre></div>
+</div>
+<p>For example see the changes made in the <code class="docutils literal notranslate"><span class="pre">conda_build_config.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">conda-forge.yml</span></code> files in <a class="reference external" href="https://github.com/conda-forge/libignition-physics-feedstock/commit/c586d765a2f5fd0ecf6da43c53315c898c9bf6bd">this</a> PR.</p>
+<p>After making these changes don’t forget to rerender with <code class="docutils literal notranslate"><span class="pre">conda-smithy</span></code> (to rerender manually use <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">smithy</span> <span class="pre">rerender</span></code> from the command line).</p>
+</section>
 </section>
 <section id="special-dependencies-and-packages">
 <h2>Special Dependencies and Packages<a class="headerlink" href="#special-dependencies-and-packages" title="Permalink to this headline">¶</a></h2>
@@ -235,9 +267,9 @@ requirements of the VC version. For example, python 2.7 requires <code class="do
 <p>There are currently three supported compilers:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>c</p></li>
+<li><p>C</p></li>
 <li><p>cxx</p></li>
-<li><p>fortran</p></li>
+<li><p>Fortran</p></li>
 </ul>
 </div></blockquote>
 <p>A package that needs all three compilers would define</p>
@@ -251,17 +283,18 @@ requirements of the VC version. For example, python 2.7 requires <code class="do
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Appropriate compiler runtime packages will be automatically added to the package’s runtime requirements and therefore
-there’s no need to specify <code class="docutils literal notranslate"><span class="pre">libgcc</span></code> or <code class="docutils literal notranslate"><span class="pre">libgfortran</span></code>. There is additional information about how conda-build 3 treats
-compilers in the <a class="reference external" href="https://docs.conda.io/projects/conda-build/en/latest/source/compiler-tools.html">conda docs</a>.</p>
+there’s no need to specify <code class="docutils literal notranslate"><span class="pre">libgcc</span></code> or <code class="docutils literal notranslate"><span class="pre">libgfortran</span></code>. There are additional informations about how conda-build 3 treats
+compilers in the <a class="reference external" href="https://docs.conda.io/projects/conda-build/en/latest/resources/compiler-tools.html">conda docs</a>.</p>
 </div>
 </section>
 <section id="core-dependency-tree-packages-cdts">
 <span id="cdt-packages"></span><h3>Core Dependency Tree Packages (CDTs)<a class="headerlink" href="#core-dependency-tree-packages-cdts" title="Permalink to this headline">¶</a></h3>
 <p>Dependencies outside of the <code class="docutils literal notranslate"><span class="pre">conda-forge</span></code> channel should be avoided (see <a class="reference internal" href="adding_pkgs.html#no-external-deps"><span class="std std-ref">Avoid external dependencies</span></a>).
-However, there are a few exceptions: some dependencies are so close to the system
-that they are not packaged with <code class="docutils literal notranslate"><span class="pre">conda-forge</span></code>. These dependencies have to be satisfied with
-<em>Core Dependency Tree</em> (CDT) packages. A CDT package consists of repackaged CentOS binaries from the
-appropriate version, either 6 or 7 depending on user choice and platform. We manage the build of CDT
+However, there are a few exceptions:</p>
+<p>Some dependencies are so close to the system that they are not packaged with <code class="docutils literal notranslate"><span class="pre">conda-forge</span></code>.
+These dependencies have to be satisfied with <em>Core Dependency Tree</em> (CDT) packages.</p>
+<p>A CDT package consists of repackaged CentOS binaries from the appropriate version,
+either 6 or 7 depending on user choice and platform. We manage the build of CDT
 packages using a centralized repo, <a class="reference external" href="https://github.com/conda-forge/cdt-builds">conda-forge/cdt-builds</a>,
 as opposed to generating feedstocks for them. (Note that historically we did use feedstocks but this
 practice has been deprecated.) To add a new CDT, make a PR on the
@@ -796,6 +829,10 @@ empty placeholder. This allows them to be safely installed under all Python vers
 <td><p>python &gt;=3.6,&lt;3.7</p></td>
 <td><p>python &gt;=3.7</p></td>
 </tr>
+<tr class="row-odd"><td><p>typing</p></td>
+<td></td>
+<td><p>python &gt;=3</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -862,7 +899,7 @@ by opening a new issue and including <code class="docutils literal notranslate">
 <h2>Build matrices<a class="headerlink" href="#build-matrices" title="Permalink to this headline">¶</a></h2>
 <p>Currently, <code class="docutils literal notranslate"><span class="pre">python,</span> <span class="pre">vc,</span> <span class="pre">r-base</span></code> will create a matrix of jobs for each supported version. If <code class="docutils literal notranslate"><span class="pre">python</span></code> is only a
 build dependency and not a runtime dependency (eg: build script of the package is written in Python, but the
-package is not dependent on python), use <code class="docutils literal notranslate"><span class="pre">build</span></code> section</p>
+package is not dependent on Python), use <code class="docutils literal notranslate"><span class="pre">build</span></code> section</p>
 <p>Following implies that <code class="docutils literal notranslate"><span class="pre">python</span></code> is only a build dependency and no Python matrix will be created.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">build</span><span class="p">:</span>
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python</span>
@@ -872,7 +909,7 @@ package is not dependent on python), use <code class="docutils literal notransla
 </div>
 <p>Note that <code class="docutils literal notranslate"><span class="pre">host</span></code> should be non-empty or <code class="docutils literal notranslate"><span class="pre">compiler</span></code> jinja syntax used or <code class="docutils literal notranslate"><span class="pre">build/merge_build_host</span></code> set to
 True for the <code class="docutils literal notranslate"><span class="pre">build</span></code> section to be treated as different from <code class="docutils literal notranslate"><span class="pre">host</span></code>.</p>
-<p>Following implies that <code class="docutils literal notranslate"><span class="pre">python</span></code> is a runtime dependency and a Python matrix for each supported python version will be created.</p>
+<p>Following implies that <code class="docutils literal notranslate"><span class="pre">python</span></code> is a runtime dependency and a Python matrix for each supported Python version will be created.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">host</span><span class="p">:</span>
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python</span>
 </pre></div>
@@ -1234,17 +1271,17 @@ to install and replace <code class="docutils literal notranslate"><span class="p
 <section id="pre-release-version-sorting">
 <h3>Pre-release version sorting<a class="headerlink" href="#pre-release-version-sorting" title="Permalink to this headline">¶</a></h3>
 <p>If you wish to add numbers to your <code class="docutils literal notranslate"><span class="pre">dev</span></code> or <code class="docutils literal notranslate"><span class="pre">rc</span></code> build, you should follow the
-<a class="reference external" href="http://conda.pydata.org/docs/spec.html#build-version-spec">guidelines</a> put
+<a class="reference external" href="https://docs.conda.io/projects/conda/en/latest/user-guide/concepts/pkg-specs.html#version-ordering">guidelines</a> put
 forth by Continuum regarding version sorting in <code class="docutils literal notranslate"><span class="pre">conda</span></code>. Also see the <a class="reference external" href="https://github.com/conda/conda/blob/4.2.13/conda/version.py#L93-L119">source
 code for conda
 4.2.13</a>.
 The tl;dr here is that conda sorts as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span> <span class="mf">1.0</span>
 <span class="o">&lt;</span> <span class="mf">1.1</span><span class="n">dev1</span>    <span class="c1"># special case &#39;dev&#39;</span>
-<span class="o">&lt;</span> <span class="mf">1.1</span><span class="o">.</span><span class="mi">0</span><span class="n">dev1</span>  <span class="c1"># special case &#39;dev&#39;</span>
+<span class="o">&lt;</span> <span class="mf">1.1.0</span><span class="n">dev1</span>  <span class="c1"># special case &#39;dev&#39;</span>
 <span class="o">==</span> <span class="mf">1.1</span><span class="o">.</span><span class="n">dev1</span>   <span class="c1"># 0 is inserted before string</span>
-<span class="o">&lt;</span> <span class="mf">1.1</span><span class="o">.</span><span class="mi">0</span><span class="n">rc1</span>
-<span class="o">&lt;</span> <span class="mf">1.1</span><span class="o">.</span><span class="mi">0</span>
+<span class="o">&lt;</span> <span class="mf">1.1.0</span><span class="n">rc1</span>
+<span class="o">&lt;</span> <span class="mf">1.1.0</span>
 </pre></div>
 </div>
 <p>So make sure that you <strong>tag</strong> your package in such a way that the package name
@@ -1281,6 +1318,7 @@ higher than the package uploaded with the <code class="docutils literal notransl
 <li class="toctree-l4"><a class="reference internal" href="#local-testing">Local testing</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#simple-cmake-based-bld-bat">Simple CMake-Based <code class="docutils literal notranslate"><span class="pre">bld.bat</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#building-for-different-vc-versions">Building for different VC versions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#using-vs2019">Using vs2019</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#special-dependencies-and-packages">Special Dependencies and Packages</a><ul>
@@ -1416,7 +1454,7 @@ higher than the package uploaded with the <code class="docutils literal notransl
         <li class="right" >
           <a href="conda_forge_yml.html" title="Configuring conda-forge.yml"
              >previous</a> &nbsp; &nbsp;</li>
-    <li><a href="../index.html">conda-forge 2021.04.06 documentation</a> &#187;</li>
+    <li><a href="../index.html">conda-forge 2021.06.10 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="00_intro.html" >Maintainer Documentation</a> &#187;</li> 
       </ul>

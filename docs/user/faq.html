@@ -5,9 +5,9 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>FAQ &#8212; conda-forge 2021.04.06 documentation</title>
+    <title>FAQ &#8212; conda-forge 2021.06.10 documentation</title>
     <link rel="stylesheet" href="../_static/cloud.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
@@ -37,7 +37,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Becoming involved" href="contributing.html" />
-    <link rel="prev" title="Using conda-forge to manage your CI" href="ci-skeleton.html" /> 
+    <link rel="prev" title="Using conda-smithy to manage your CI" href="ci-skeleton.html" /> 
         <meta name="viewport" content="width=device-width, initial-scale=1">
   </head><body>
     <div class="relbar-top">
@@ -52,9 +52,9 @@
           <a href="contributing.html" title="Becoming involved"
              accesskey="N">next</a> &nbsp; &nbsp;</li>
         <li class="right" >
-          <a href="ci-skeleton.html" title="Using conda-forge to manage your CI"
+          <a href="ci-skeleton.html" title="Using conda-smithy to manage your CI"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
-    <li><a href="../index.html">conda-forge 2021.04.06 documentation</a> &#187;</li>
+    <li><a href="../index.html">conda-forge 2021.06.10 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="00_intro.html" accesskey="U">User Documentation</a> &#187;</li> 
       </ul>
@@ -83,7 +83,7 @@
 </div></blockquote>
 <p id="faq-contact"><a class="reference internal" href="#faq-contact"><span class="std std-ref">(Q)</span></a> <strong>I have a question/suggestion. How can I contact you?</strong></p>
 <blockquote>
-<div><p>Please join us in our <a class="reference external" href="https://gitter.im/conda-forge/conda-forge.github.io">gitter channel</a>! We are always happy to answer questions and help beginners!</p>
+<div><p>Please join us on our <a class="reference external" href="https://gitter.im/conda-forge/conda-forge.github.io">Gitter channel</a>. We are always happy to answer questions and help beginners.</p>
 </div></blockquote>
 <p id="faq-teams"><a class="reference internal" href="#faq-teams"><span class="std std-ref">(Q)</span></a> <strong>I have a set of related packages, how do I create a conda-forge team?</strong></p>
 <blockquote>
@@ -94,7 +94,7 @@ make all maintainers of the r-feedstock also maintainers of the new package.</p>
 </div></blockquote>
 <p id="faq-solver-speed"><a class="reference internal" href="#faq-solver-speed"><span class="std std-ref">(Q)</span></a> <strong>Installing and updating takes a long time, what can I do?</strong></p>
 <blockquote>
-<div><p>Enabling struct channel priority may help. You can do this via</p>
+<div><p>Enabling strict channel priority may help. You can do this via</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda config --set channel_priority strict
 </pre></div>
 </div>
@@ -115,15 +115,15 @@ Note that <code class="docutils literal notranslate"><span class="pre">travis-ci
 <p id="faq-compiler-metapkg"><a class="reference internal" href="#faq-compiler-metapkg"><span class="std std-ref">(Q)</span></a> <strong>How can I install a C/C++ compiler in my environment?</strong></p>
 <blockquote>
 <div><p>You can use our convenient meta-packages <code class="docutils literal notranslate"><span class="pre">c-compiler</span></code> and <code class="docutils literal notranslate"><span class="pre">cxx-compiler</span></code> to install a compiler stack that fits your platform. Error messages such as</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x86_64</span><span class="o">-</span><span class="n">apple</span><span class="o">-</span><span class="n">darwin13</span><span class="o">.</span><span class="mf">4.0</span><span class="o">-</span><span class="n">clang</span><span class="p">:</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="ow">or</span> <span class="n">directory</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x86_64</span><span class="o">-</span><span class="n">apple</span><span class="o">-</span><span class="n">darwin13</span><span class="mf">.4.0</span><span class="o">-</span><span class="n">clang</span><span class="p">:</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="ow">or</span> <span class="n">directory</span>
 </pre></div>
 </div>
 <p>are a telltale sign that you are lacking compilers.</p>
 </div></blockquote>
-<p><span class="xref std std-ref">(Q)</span> <strong>How can I compile CUDA (host or device) codes in my environment?</strong></p>
+<p id="faq-cuda-compiler-header"><a class="reference internal" href="#faq-cuda-compiler-header"><span class="std std-ref">(Q)</span></a> <strong>How can I compile CUDA (host or device) codes in my environment?</strong></p>
 <blockquote>
-<div><p>Unfortunately, this is not possible with Conda-Forge’s current infrastructure (<code class="docutils literal notranslate"><span class="pre">nvcc</span></code>, <code class="docutils literal notranslate"><span class="pre">cudatoolkit</span></code>, etc) if there is no local CUDA Toolkit installation. In particular, the <code class="docutils literal notranslate"><span class="pre">nvcc</span></code> package provided on Conda-Forge is a <em>wrapper package</em> that exposes the actual <code class="docutils literal notranslate"><span class="pre">nvcc</span></code> compiler to our CI infrastructure in a <code class="docutils literal notranslate"><span class="pre">conda</span></code>-friendly way; it does not contain the full <code class="docutils literal notranslate"><span class="pre">nvcc</span></code> compiler toolchain. One of the reasons is that CUDA headers like <code class="docutils literal notranslate"><span class="pre">cuda.h</span></code>, <code class="docutils literal notranslate"><span class="pre">cuda_runtime.h</span></code>, etc, are not redistributable according to NVIDIA’s EULA, which are needed at compile time. Likewise, the <code class="docutils literal notranslate"><span class="pre">cudatoolkit</span></code> package only contains CUDA runtime libraries and not the compiler toolchain.</p>
-<p>If you need to compile CUDA codes, even if they involve only CUDA host APIs, you will still need a valid CUDA Toolkit installed locally and use it. Please refer to <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html">NVCC’s documentation</a> for the CUDA compiler usage and <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">CUDA Programming Guide</a> for general CUDA programming.</p>
+<div><p>Unfortunately, this is not possible with conda-forge’s current infrastructure (<code class="docutils literal notranslate"><span class="pre">nvcc</span></code>, <code class="docutils literal notranslate"><span class="pre">cudatoolkit</span></code>, etc) if there is no local CUDA Toolkit installation. In particular, the <code class="docutils literal notranslate"><span class="pre">nvcc</span></code> package provided on conda-forge is a <em>wrapper package</em> that exposes the actual <code class="docutils literal notranslate"><span class="pre">nvcc</span></code> compiler to our CI infrastructure in a <code class="docutils literal notranslate"><span class="pre">conda</span></code>-friendly way; it does not contain the full <code class="docutils literal notranslate"><span class="pre">nvcc</span></code> compiler toolchain. One of the reasons is that CUDA headers like <code class="docutils literal notranslate"><span class="pre">cuda.h</span></code>, <code class="docutils literal notranslate"><span class="pre">cuda_runtime.h</span></code>, etc, which are needed at compile time, are not redistributable according to NVIDIA’s EULA. Likewise, the <code class="docutils literal notranslate"><span class="pre">cudatoolkit</span></code> package only contains CUDA runtime libraries and not the compiler toolchain.</p>
+<p>If you need to compile CUDA code, even if it involves only CUDA host APIs, you will still need a valid CUDA Toolkit installed locally and use it. Please refer to <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html">NVCC’s documentation</a> for the CUDA compiler usage and <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">CUDA Programming Guide</a> for general CUDA programming.</p>
 </div></blockquote>
 </section>
 
@@ -142,10 +142,10 @@ Note that <code class="docutils literal notranslate"><span class="pre">travis-ci
 <li class="toctree-l2"><a class="reference internal" href="introduction.html">A brief introduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="announcements.html">Announcements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tipsandtricks.html">Tips &amp; tricks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ci-skeleton.html">Using conda-forge to manage your CI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci-skeleton.html">Using conda-smithy to manage your CI</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">FAQ</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contributing.html">Becoming involved</a></li>
-<li class="toctree-l2"><a class="reference internal" href="how_to_get_help.html">How to get help in conda-forge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="how_to_get_help.html">How to get help at conda-forge</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../maintainer/00_intro.html">Maintainer Documentation</a></li>
@@ -158,7 +158,7 @@ Note that <code class="docutils literal notranslate"><span class="pre">travis-ci
   <div class="sphinxprev">
     <h4>Previous page</h4>
     <p class="topless"><a href="ci-skeleton.html"
-                          title="Previous page">&larr; Using conda-forge to manage your CI</a></p>
+                          title="Previous page">&larr; Using conda-smithy to manage your CI</a></p>
   </div>
   <div class="sphinxnext">
     <h4>Next page</h4>
@@ -215,9 +215,9 @@ Note that <code class="docutils literal notranslate"><span class="pre">travis-ci
           <a href="contributing.html" title="Becoming involved"
              >next</a> &nbsp; &nbsp;</li>
         <li class="right" >
-          <a href="ci-skeleton.html" title="Using conda-forge to manage your CI"
+          <a href="ci-skeleton.html" title="Using conda-smithy to manage your CI"
              >previous</a> &nbsp; &nbsp;</li>
-    <li><a href="../index.html">conda-forge 2021.04.06 documentation</a> &#187;</li>
+    <li><a href="../index.html">conda-forge 2021.06.10 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="00_intro.html" >User Documentation</a> &#187;</li> 
       </ul>
