@@ -154,9 +154,9 @@ conda environment. This can be accomplished (for gcc) by passing `-sysroot=/` on
 
 ## How can I compile CUDA (host or device) codes in my environment?
 
-Unfortunately, this is not possible with conda-forge's current infrastructure (`nvcc`, `cudatoolkit`, etc) if there is no local CUDA Toolkit installation. In particular, the `nvcc` package provided on conda-forge is a _wrapper package_ that exposes the actual `nvcc` compiler to our CI infrastructure in a `conda`-friendly way; it does not contain the full `nvcc` compiler toolchain. One of the reasons is that CUDA headers like `cuda.h`, `cuda_runtime.h`, etc, which are needed at compile time, are not redistributable according to NVIDIA's EULA. Likewise, the `cudatoolkit` package only contains CUDA runtime libraries and not the compiler toolchain.
-
-If you need to compile CUDA code, even if it involves only CUDA host APIs, you will still need a valid CUDA Toolkit installed locally and use it. Please refer to [NVCC's documentation](https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html) for the CUDA compiler usage and [CUDA Programming Guide](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html) for general CUDA programming.
+Beginning with CUDA 12.0, the entire CUDA Toolkit including compilers is
+distributed via Conda packages. To install the CUDA compiler, simply install
+the `cuda-compiler` package.
 
 <a id="faq-abi-incompatibility"></a>
 
