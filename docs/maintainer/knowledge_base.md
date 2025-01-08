@@ -2005,146 +2005,116 @@ if you're using a `c_stdlib_version` of `2.28`, set it to `alma8`.
 
 ## CUDA builds
 
-Although the provisioned CI machines do not feature a GPU, conda-forge does provide mechanisms
-to build CUDA-enabled packages. These mechanisms involve several packages:
+The full suite of CUDA packages including CUDA headers, libraries, and dev
+tools are packaged and made available in conda-forge. For more details, please
+see [these docs](
+https://github.com/conda-forge/cuda-feedstock/blob/main/recipe/README.md ).
 
-- `cudatoolkit`: The runtime libraries for the CUDA toolkit. This is what end-users will end
-  up installing next to your package.
-- `nvcc`: Nvidia's EULA does not allow the redistribution of compilers and drivers. Instead, we
-  provide a wrapper package that locates the CUDA installation in the system. The main role of this
-  package is to set some environment variables (`CUDA_HOME`, `CUDA_PATH`, `CFLAGS` and others),
-  as well as wrapping the real `nvcc` executable to set some extra command line arguments.
+<a id="using-cuda-in-a-recipe-build"></a>
 
-In practice, to enable CUDA on your package, add `{{ compiler('cuda') }}` to the `build`
-section of your requirements and rerender. The matching `cudatoolkit` will be added to the `run`
-requirements automatically.
+### Using CUDA in a recipe build
 
-On Linux, CMake users are required to use `${CMAKE_ARGS}` so CMake can find CUDA correctly. For example:
-
-```shell-session
-mkdir build && cd build
-cmake ${CMAKE_ARGS} ${SRC_DIR}
-make
-```
-
-:::note
-
-**How is CUDA provided at the system level?**
-
-- On Linux, Nvidia provides official Docker images, which we then
-  [adapt](https://github.com/conda-forge/docker-images) to conda-forge's needs.
-- On Windows, the compilers need to be installed for every CI run. This is done through the
-  [conda-forge-ci-setup](https://github.com/conda-forge/conda-forge-ci-setup-feedstock/) scripts.
-  Do note that the Nvidia executable won't install the drivers because no GPU is present in the machine.
-
-**How is cudatoolkit selected at install time?**
-
-Conda exposes the maximum CUDA version supported by the installed Nvidia drivers through a virtual package
-named `__cuda`. By default, `conda` will install the highest version available
-for the packages involved. To override this behaviour, you can define a `CONDA_OVERRIDE_CUDA` environment
-variable. More details in the
-[Conda docs](https://docs.conda.io/projects/conda/en/stable/user-guide/tasks/manage-virtual.html#overriding-detected-packages).
-
-Note that prior to v4.8.4, `__cuda` versions would not be part of the constraints, so you would always
-get the latest one, regardless the supported CUDA version.
-
-If for some reason you want to install a specific version, you can use:
-
-```default
-conda install your-gpu-package cudatoolkit=10.1
-```
-
-:::
-
-<a id="testing-the-packages"></a>
-
-### Testing the packages
-
-Since the CI machines do not feature a GPU, you won't be able to test the built packages as part
-of the conda recipe. That does not mean you can't test your package locally. To do so:
-
-1. Enable the Azure artifacts for your feedstock (see [here](conda_forge_yml.mdx#azure)).
-2. Include the test files and requirements in the recipe
-   [like this](https://github.com/conda-forge/cupy-feedstock/blob/a1e9cdf47775f90d3153a26913068c6df942d54b/recipe/meta.yaml#L51-L61).
-3. Provide the test instructions. Take into account that the GPU tests will fail in the CI run,
-   so you need to ignore them to get the package built and uploaded as an artifact.
-   [Example](https://github.com/conda-forge/cupy-feedstock/blob/a1e9cdf47775f90d3153a26913068c6df942d54b/recipe/run_test.py).
-4. Once you have downloaded the artifacts, you will be able to run:
-   ```default
-   conda build --test <pkg file>.tar.bz2
-   ```
+In practice, to enable CUDA in your recipe, add `{{ compiler('cuda') }}` to
+the `requirements/build` section and rerender. The matching CUDA packages will
+be added to the `run` requirements automatically.
 
 <a id="common-problems-and-known-issues"></a>
 
 ### Common problems and known issues
 
+CMake users need to pass the environment variable `CMAKE_ARGS` to `cmake`.
+This is needed so the CUDA compiler is configured correctly. For example:
+
+```shell-session
+mkdir build && cd build
+cmake -G Ninja %CMAKE_ARGS% %SRC_DIR%
+ninja
+```
+
+```batch-session
+mkdir build && cd build
+cmake -G Ninja %CMAKE_ARGS% %SRC_DIR%
+ninja
+```
+
+<a id="cuda-driver-library-missing"></a>
+<a id="libcuda-so-cannot-be-found-on-linux"></a>
 <a id="nvcuda-dll-cannot-be-found-on-windows"></a>
+### Driver library cannot be found (Linux `libcuda.so` or Windows `nvcuda.dll`)
 
-#### `nvcuda.dll` cannot be found on Windows
+CUDA builds are typically done on machines without a GPU. So they lack the
+driver library. This may result in errors finding or loading
+`libcuda.so` on Linux or `nvcuda.dll` on Windows.
 
-The [scripts](https://github.com/conda-forge/conda-forge-ci-setup-feedstock/blob/master/recipe/install_cuda.bat)
-used to install the CUDA Toolkit on Windows cannot provide `nvcuda.dll`
-as part of the installation because no GPU is physically present in the CI machines.
-As a result, you might get linking errors in the postprocessing steps of `conda build`:
+For example:
 
 ```default
-WARNING (arrow-cpp,Library/bin/arrow_cuda.dll): $RPATH/nvcuda.dll not found in packages,
+$RPATH/libcuda.so not found in packages,
 sysroot(s) nor the missing_dso_whitelist.
 
 .. is this binary repackaging?
 ```
 
-For now, you will have to add `nvcuda.dll` to the `missing_dso_whitelist`
+```default
+$RPATH/nvcuda.dll not found in packages,
+sysroot(s) nor the missing_dso_whitelist.
+
+.. is this binary repackaging?
+```
+
+For now, you will have to add `libcuda.so` or `nvcuda.dll` to the
+`missing_dso_whitelist` like so:
 
 ```yaml
 build:
   ...
   missing_dso_whitelist:
+    - "*/libcuda.so"   # [linux]
     - "*/nvcuda.dll"   # [win]
 ```
 
+Note that any operations with the package that require loading the CUDA driver
+library will fail. So either those operation should be avoided or guarded.
+Otherwise one may consider using a GPU CI machine for a portion (tests only) or
+all of the build.
+
 <a id="my-feedstock-is-not-building-old-cuda-versions-anymore"></a>
 
-#### My feedstock is not building old CUDA versions anymore
+#### How to select CUDA Toolkit version at runtime
 
-With the [addition of CUDA 11.1 and 11.2](https://github.com/conda-forge/conda-forge-pinning-feedstock/pull/1162),
-the default build matrix for CUDA versions was trimmed down to versions 10.2, 11.0, 11.1, 11.2.
+The `cuda-version` package is used to select the CUDA Toolkit version installed at runtime. For example:
 
-If you really need it, you can re-add support for 9.2, 10.0 and 10.1. However, this is not recommended.
-Adding more CUDA versions to the build matrix will dramatically increase the number of jobs and will place a large
-burden on our CI resources. Only proceed if there's a known use case for the extra packages.
+```default
+conda install -c conda-forge cuda-version=<CUDA version>
+```
 
-1. Download this [migration file](https://github.com/conda-forge/conda-forge-pinning-feedstock/blob/b6d14bce8613d14e252e46ccee13ecb160eb6494/recipe/migrations/cuda92_100_101.yaml).
-2. In your feedstock fork, create a new branch and place the migration file under `.ci_support/migrations`.
-3. Open a PR and re-render. CUDA 9.2, 10.0 and 10.1 will appear in the CI checks now. Merge when ready!
+This can be specified as tightly or as loosely as is needed. It will ensure all other CUDA packages installed align with that CUDA version.
 
-<a id="adding-support-for-a-new-cuda-version"></a>
+If Conda can detect the maximum CUDA version supported by a system GPU, it will
+use that to set the virtual package `__cuda`. This will further constrain the
+`cuda-version` package as well as any other package that depends on `__cuda`.
 
-### Adding support for a new CUDA version
+It is also possible for users to override the value of `__cuda` manually by
+setting the environment variable `CONDA_OVERRIDE_CUDA`.
 
-Providing a new CUDA version involves five repositores:
+More details about virtual packages including `__cuda` can be found in [this
+Conda doc](
+https://docs.conda.io/projects/conda/en/stable/user-guide/tasks/manage-virtual.html
+).
 
-- [cudatoolkit-feedstock](https://github.com/conda-forge/cudatoolkit-feedstock)
-- [nvcc-feedstock](https://github.com/conda-forge/nvcc-feedstock)
-- [conda-forge-pinning-feedstock](https://github.com/conda-forge/conda-forge-pinning-feedstock)
-- [docker-images](https://github.com/conda-forge/docker-images) (Linux only)
-- [conda-forge-ci-setup-feedstock](https://github.com/conda-forge/conda-forge-ci-setup-feedstock) (Windows only)
+<a id="my-feedstock-is-not-building-old-cuda-versions-anymore"></a>
 
-The steps involved are, roughly:
+#### My feedstock is not building (old) CUDA versions anymore
 
-1. Add the `cudatoolkit` packages in `cudatoolkit-feedstock`.
-2. Submit the version migrator to `conda-forge-pinning-feedstock`.
-   This will stay open during the following steps.
-3. For Linux, add the corresponding Docker images at `docker-images`.
-   Copy the migration file manually to `.ci_support/migrations`.
-   This copy should not specify a timestamp. Comment it out and rerender.
-4. For Windows, add the installer URLs and hashes to the `conda-forge-ci-setup`
-   [script](https://github.com/conda-forge/conda-forge-ci-setup-feedstock/blob/master/recipe/install_cuda.bat).
-   The migration file must also be manually copied here. Rerender.
-5. Create the new `nvcc` packages for the new version. Again, manual
-   migration must be added. Rerender.
-6. When everything else has been merged and testing has taken place,
-   consider merging the PR opened at step 2 now so it can apply to all the downstream feedstocks.
+Periodically conda-forge drops support of CUDA versions as they become to old
+or difficult to support.
+
+Conda-forge started with CUDA 9.2 support back in 2019 and has gone through a
+series of CUDA versions between then and now. As of January 2025, the oldest
+supported CUDA version in conda-forge is 11.8. Any earlier CUDA version is
+dropped. Also CUDA 12.0 was added to conda-forge in 2023 and feedstocks not yet
+supporting CUDA 12 are highly recommended to make the move. The large
+majority of feedstocks support CUDA 11.8 & 12.x (where x is latest).
 
 <a id="opengpuserver"></a>
 
